@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.OleDb;
 
@@ -17,7 +16,7 @@ namespace SLXUpdateIDs
         static string Password = GetSetting("Password");
         static string strconnection = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", Password, Username, Database, Server);
         static List<string> code_list = SetCodeList();
-        static Dictionary<string, string> keys = SetNewSiteKeys();
+        static Dictionary<string, string> keys;
 
         static void Main(string[] args)
         {
@@ -50,6 +49,7 @@ namespace SLXUpdateIDs
         
         static void Run()
         {
+            keys = SetNewSiteKeys();
             SetFields();
             Pause();
         }
@@ -60,15 +60,40 @@ namespace SLXUpdateIDs
             while (x < arguments.Count())
             {
                 string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
-                Console.WriteLine(cleanarg);
+                //Console.WriteLine(cleanarg);
 
-                if (cleanarg == "test")
+                switch (cleanarg.ToUpper())
                 {
-                    Test();
+                    case "TEST":
+                        Test();
+                        break;
+                    case "HELP":
+                        Help();
+                        break;
+                    default:
+                        Console.WriteLine("Unknown parameter");
+                        break;
+
                 }
                 x++;
             }
             Pause();
+        }
+
+        static void Help()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.WriteLine("Here is the help for this utility.");
+            Console.Write("This is a" );
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Red");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(" Word.");
         }
 
         static void SetFields()
@@ -139,7 +164,7 @@ namespace SLXUpdateIDs
                 int reader = int.Parse(objCmd.ExecuteScalar().ToString());
                 return reader;
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 return 0;
             }
@@ -200,7 +225,7 @@ namespace SLXUpdateIDs
             {
                 x = objCmd.ExecuteNonQuery();
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 return 0;
             }
@@ -285,6 +310,7 @@ namespace SLXUpdateIDs
         static void Pause()
         {
             //method to pause output
+            Console.WriteLine("");
             Console.WriteLine("Press ENTER to continue....");
             Console.ReadLine();
         }

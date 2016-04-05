@@ -8,8 +8,13 @@ using System.Data.OleDb;
 
 namespace SLXUpdateIDs
 {
+    
+
     class Program
     {
+
+        static Worker work = new Worker();
+
         static string Database = GetSetting("Database");
         static string Server = GetSetting("Server");
         static string Username = GetSetting("Username");

@@ -10,16 +10,23 @@ namespace SLXUpdateIDs
 {
     class Program
     {
+        Worker work = new Worker();
+        
         static string Database = GetSetting("Database");
         static string Server = GetSetting("Server");
         static string Username = GetSetting("Username");
         static string Password = GetSetting("Password");
         static string strconnection = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", Password, Username, Database, Server);
+        //static string strconnection = string.Format("Provider=SLXOLEDB.1;Data Source={0};Initial Catalog={1};User Id={2};Password={3};Persist Security Info=True; Extended Properties='Port=1706;Log=On'", Server, Database, Username, Password);
         static List<string> code_list = SetCodeList();
         static Dictionary<string, string> keys;
-
+        
         static void Main(string[] args)
         {
+            Worker farts = new Worker();
+
+            farts
+
             if (args.Length == 0) 
             {
                 Run();
@@ -60,7 +67,6 @@ namespace SLXUpdateIDs
             while (x < arguments.Count())
             {
                 string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
-                //Console.WriteLine(cleanarg);
 
                 switch (cleanarg.ToUpper())
                 {
@@ -71,9 +77,8 @@ namespace SLXUpdateIDs
                         Help();
                         break;
                     default:
-                        Console.WriteLine("Unknown parameter");
+                        Console.WriteLine(string.Format("Error - Unknown parameter '{0}'", cleanarg));
                         break;
-
                 }
                 x++;
             }
@@ -82,18 +87,22 @@ namespace SLXUpdateIDs
 
         static void Help()
         {
-            Console.WriteLine("");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.Write("This is a" );
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Red");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write(" Word.");
+            
+            Console.WriteLine();
+            Console.WriteLine("Copyright (c) 2016 Customer FX Corporation");
+            Console.WriteLine();
+            Console.WriteLine("This utility updates the Database defined ");
+            Console.WriteLine("in the SLXUpdateIDs.exe.config file.");
+            Console.WriteLine("------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("This utility does not need to be run with ");
+            Console.WriteLine("Parameters, however the following options ");
+            Console.WriteLine("are available.");
+            Console.WriteLine();
+            Console.WriteLine("Paramaters:");
+            Console.WriteLine();
+            Console.WriteLine("/Help - Returns this");
+            Console.WriteLine("/Test - Runs Test Module");
         }
 
         static void SetFields()
@@ -310,7 +319,7 @@ namespace SLXUpdateIDs
         static void Pause()
         {
             //method to pause output
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Press ENTER to continue....");
             Console.ReadLine();
         }

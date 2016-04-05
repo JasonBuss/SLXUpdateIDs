@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 using System.Configuration;
 using System.Data.OleDb;
+
+public class Worker
+{
+	public string Worker()
+	{
+        return "Nuts";
+	}
+=======
 
 namespace SLXUpdateIDs
 {
@@ -57,4 +66,5 @@ namespace SLXUpdateIDs
     }
 
 
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
 }

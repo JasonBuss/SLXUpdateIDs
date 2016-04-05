@@ -12,6 +12,10 @@ namespace SLXUpdateIDs
 
     class Program
     {
+<<<<<<< HEAD
+        Worker work = new Worker();
+        
+=======
 
         static Work working = new Work();
         static ConsoleFunctions console = new ConsoleFunctions();
@@ -19,6 +23,7 @@ namespace SLXUpdateIDs
         #region old code 1
         static Worker work = new Worker();
 
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
         static string Database = GetSetting("Database");
         static string Server = GetSetting("Server");
         static string Username = GetSetting("Username");
@@ -27,8 +32,12 @@ namespace SLXUpdateIDs
         //static string strconnection = string.Format("Provider=SLXOLEDB.1;Data Source={0};Initial Catalog={1};User Id={2};Password={3};Persist Security Info=True; Extended Properties='Port=1706;Log=On'", Server, Database, Username, Password);
         static List<string> code_list = SetCodeList();
         static Dictionary<string, string> keys;
-        #endregion
+<<<<<<< HEAD
         
+=======
+        #endregion
+
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
         static void Main(string[] args)
         {
             Worker farts = new Worker();
@@ -58,6 +67,10 @@ namespace SLXUpdateIDs
             while (x < arguments.Count())
             {
                 string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
+<<<<<<< HEAD
+
+=======
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
                 switch (cleanarg.ToUpper())
                 {
                     case "TEST":
@@ -65,7 +78,11 @@ namespace SLXUpdateIDs
                     case "HELP":
                         break;
                     default:
+<<<<<<< HEAD
+                        Console.WriteLine(string.Format("Error - Unknown parameter '{0}'", cleanarg));
+=======
                         console.WriteLine("Unknown parameter");
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
                         break;
                 }
                 x++;
@@ -94,10 +111,25 @@ namespace SLXUpdateIDs
 
         static void Help()
         {
+<<<<<<< HEAD
+            
+            Console.WriteLine();
+            Console.WriteLine("Copyright (c) 2016 Customer FX Corporation");
+            Console.WriteLine();
+            Console.WriteLine("This utility updates the Database defined ");
+            Console.WriteLine("in the SLXUpdateIDs.exe.config file.");
+            Console.WriteLine("------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("This utility does not need to be run with ");
+            Console.WriteLine("Parameters, however the following options ");
+            Console.WriteLine("are available.");
+            Console.WriteLine();
             Console.WriteLine("Paramaters:");
             Console.WriteLine();
             Console.WriteLine("/Help - Returns this");
             Console.WriteLine("/Test - Runs Test Module");
+=======
+>>>>>>> 77410bdea0d8fcec74eef89113529617e95a8603
         }
         #endregion
 

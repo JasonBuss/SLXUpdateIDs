@@ -13,6 +13,10 @@ namespace SLXUpdateIDs
     class Program
     {
 
+        static Work working = new Work();
+        static ConsoleFunctions console = new ConsoleFunctions();
+
+        #region old code 1
         static Worker work = new Worker();
 
         static string Database = GetSetting("Database");
@@ -22,6 +26,7 @@ namespace SLXUpdateIDs
         static string strconnection = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", Password, Username, Database, Server);
         static List<string> code_list = SetCodeList();
         static Dictionary<string, string> keys;
+        #endregion
 
         static void Main(string[] args)
         {
@@ -31,11 +36,39 @@ namespace SLXUpdateIDs
             }
             else
             {
-                if (ValidateArgs(args)) { RunWithArguments(args); }
+                if (working.ValidateArgs(args)) { RunWithArguments(args); }
             }
         }
 
-        
+        static void Run()
+        {
+            keys = SetNewSiteKeys();
+            SetFields();
+            Pause();
+        }
+
+        static void RunWithArguments(string[] arguments)
+        {
+            int x = 0;
+            while (x < arguments.Count())
+            {
+                string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
+                switch (cleanarg.ToUpper())
+                {
+                    case "TEST":
+                        break;
+                    case "HELP":
+                        break;
+                    default:
+                        console.WriteLine("Unknown parameter");
+                        break;
+                }
+                x++;
+            }
+            console.Pause();
+        }
+
+        #region old code 2
         static string GetSetting(string key)
         {
             string ret = "None";
@@ -52,54 +85,12 @@ namespace SLXUpdateIDs
             return ret;
         }
         
-        static void Run()
-        {
-            keys = SetNewSiteKeys();
-            SetFields();
-            Pause();
-        }
 
-        static void RunWithArguments(string[] arguments)
-        {
-            int x = 0;
-            while (x < arguments.Count())
-            {
-                string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
-                //Console.WriteLine(cleanarg);
-
-                switch (cleanarg.ToUpper())
-                {
-                    case "TEST":
-                        Test();
-                        break;
-                    case "HELP":
-                        Help();
-                        break;
-                    default:
-                        Console.WriteLine("Unknown parameter");
-                        break;
-
-                }
-                x++;
-            }
-            Pause();
-        }
 
         static void Help()
         {
-            Console.WriteLine("");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.WriteLine("Here is the help for this utility.");
-            Console.Write("This is a" );
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Red");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write(" Word.");
         }
+        #endregion
 
         static void SetFields()
         {

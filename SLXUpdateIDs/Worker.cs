@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SLXUpdateIDs
 {
+
     class Worker
     {
+        static Main main = new Main();
         public bool ValidateArgs(string[] arguments)
         {
             bool ret = true;
@@ -51,4 +53,6 @@ namespace SLXUpdateIDs
             Console.Write(" Word.");
         }
     }
+
+
 }

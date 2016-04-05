@@ -50,6 +50,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="System.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,11 +8,16 @@ using System.Data.OleDb;
 
 namespace SLXUpdateIDs
 {
-    public class Work
+    public class Main
     {
-        public ConsoleFunctions console = new ConsoleFunctions();
+        
+        Worker worker;
+        public Main()
+        {
+            Work work = new Work();
+        }
 
-        public string GetSetting(string key)
+        public string GetSettings(string key)
         {
             string ret = "None";
             try
@@ -24,30 +29,30 @@ namespace SLXUpdateIDs
             }
             catch (ConfigurationErrorsException)
             {
-                console.WriteLine("Error reading app settings");
+                Console.WriteLine("Error reading app settings");
             }
             return ret;
         }
 
-        public void testfunction()
+        public string GetConnectionStr()
         {
-            Data home = new Data();
+            string username = GetSettings("Username");
+            string password = GetSettings("Password");
+            string server = GetSettings("Server");
+            string database = GetSettings("Database");
 
-            OleDbConnection con = home.GetDatabaseConnection("Personal");
-
-            string retvalue;
-
-            console.WriteLine("Enter SQL Statement");
-            try
-            {
-                retvalue = home.executeSql(con, console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                retvalue = e.ToString();
-            }
-            console.WriteLine(String.Format("RETURNED = {0}", retvalue));
+            string connectionstr = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", password, username, database, server);
+            return connectionstr;
         }
+
+    }
+    public class Work
+    {
+        static ConsoleFunctions console = new ConsoleFunctions();
+
+
+
+       
 
         #region Arguments
         /* Functions to validate arguments passed to application */
@@ -77,6 +82,7 @@ namespace SLXUpdateIDs
         }
         #endregion
 
+        /*
         #region Help/About
 
         public string showHelp(bool printToConsole)
@@ -110,133 +116,106 @@ namespace SLXUpdateIDs
         }
 
         #endregion
-
+        */
     }
 
-    public class Data
+    /*
+    public class Sql
     {
-        static Worker work = new Worker();
-        static ConsoleFunctions console = new ConsoleFunctions();
+        Work work = new Work();
 
-        public OleDbConnection GetDatabaseConnection(string database)
+        System system = new System();
+        
+        public string GetConnection()
         {
-            string server = work.GetSetting("Server");
-            string username = work.GetSetting("Username");
-            string password = work.GetSetting("Password");
+            
+            string username = system.GetSetting("Username");
+            string password = system.GetSetting("Password");
+            string server = system.GetSetting("Server");
+            string database = system.GetSetting("Database");
 
-            string constr = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", password, username, database, server);
-            console.WriteLine(constr);
-            OleDbConnection conn = new OleDbConnection(constr);
-            return conn;
+            string con = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", password, username, database, server);
+
+            return "";
         }
-
-        public string executeSql(OleDbConnection conn, string sql)
+ 
+        /*static int GetSqlInt(string sql)
         {
 
-            conn.Open();
-            OleDbCommand cmd = new OleDbCommand(sql, conn);
-            string ret;
+            OleDbConnection objConn = new OleDbConnection(GetConnection());
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
 
             try
             {
-                ret = cmd.ExecuteNonQuery().ToString();
+                int reader = int.Parse(objCmd.ExecuteScalar().ToString());
+                return reader;
             }
             catch (Exception e)
             {
-                ret = e.ToString();
+                return 0;
+            }
+        }*/
+
+        /*static string GetSqlValue(string sql)
+        {
+            //returns single item from sql
+            OleDbConnection objConn = new OleDbConnection(GetConnection());
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
+
+            try
+            {
+                string reader = objCmd.ExecuteScalar().ToString();
+                return reader;
+            }
+            catch (FXSystem.Exception e)
+            {
+                return e.Message;
+            }
+        }*/
+
+        /*static List<string> GetSqlValues(string sql)
+        {
+            //returns a generic list containing single column returned from sql 
+            List<string> ret = new List<string>();
+
+            OleDbConnection objConn = new OleDbConnection(GetConnection());
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
+
+            try
+            {
+                OleDbDataReader reader = objCmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    ret.Add(reader[0].ToString());
+                }
+            }
+            catch (FXSystem.Exception e)
+            {
+                ret.Add(e.Message);
             }
             return ret;
-        }
+        }*/
 
-
-
-    }
-
-    #region Helper Classes
-    public class ConsoleFunctions
-    {
-        public void WriteLine(string line)
+        /*static int ExecuteSql(string sql)
         {
-            Console.WriteLine(line);
-        }
-        public void Pause()
-        {
-            Console.WriteLine();
-            Console.WriteLine("press ENTER to continue....");
-            Console.ReadLine();
-        }
-        public string ReadLine()
-        {
-            return Console.ReadLine();
-        }
-    }
-    public class HelpAbout
-    {
-        static Work work = new Work();
-        static ConsoleFunctions con = new ConsoleFunctions();
-
-        static string[] hlp = new string[]
-        {
-            //string array to contain the help file contents
-            "",
-            string.Format("/HELP - Displays this help file"),
-            string.Format("/ABOUT - Displays About information"),
-            ""
-        };
-
-        static string[] abt = new string[]
-        {
-            //string array to contain 'about' information 
-            "",
-            string.Format("Program Name:    Home Application"),
-            string.Format("Program Author:  {0}", work.GetSetting("Author")),
-            ""
-        };
-
-        public string ShowHelp()
-        {
-            return ReturnString(hlp);
-        }
-
-        public void ShowHelp(bool printconsole)
-        {
-            if (printconsole)
+            //Execute SQL statement - Returns number of records effected
+            OleDbConnection objConn = new OleDbConnection(GetConnection());
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
+            Console.WriteLine(sql);
+            int x = 0;
+            try
             {
-                PrintToConsole(hlp);
+                x = objCmd.ExecuteNonQuery();
             }
-        }
-
-        public string ShowAbout()
-        {
-            return ReturnString(abt);
-        }
-
-        public void ShowAbout(bool printconsole)
-        {
-            if (printconsole)
+            catch (FXSystem.Exception)
             {
-                PrintToConsole(abt);
+                return 0;
             }
+            return x;
         }
-
-        public void PrintToConsole(string[] list)
-        {
-            foreach (string elem in list)
-            {
-                con.WriteLine(elem);
-            }
-        }
-
-        public string ReturnString(string[] list)
-        {
-            string ret = "";
-
-            foreach (string elem in list)
-            {
-                ret = ret + elem + Environment.NewLine;
-            }
-            return ret;
-        }
-    }
-    #endregion
+    }*/
 }

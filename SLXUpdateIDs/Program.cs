@@ -8,99 +8,44 @@ using System.Data.OleDb;
 
 namespace SLXUpdateIDs
 {
-    
-
     class Program
     {
 
-        static Work working = new Work();
-        static ConsoleFunctions console = new ConsoleFunctions();
+        static Worker worker;
+        static ConsoleFunctions console;
 
-        #region old code 1
-        static Worker work = new Worker();
-
-        static string Database = GetSetting("Database");
-        static string Server = GetSetting("Server");
-        static string Username = GetSetting("Username");
-        static string Password = GetSetting("Password");
-        static string strconnection = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", Password, Username, Database, Server);
-        //static string strconnection = string.Format("Provider=SLXOLEDB.1;Data Source={0};Initial Catalog={1};User Id={2};Password={3};Persist Security Info=True; Extended Properties='Port=1706;Log=On'", Server, Database, Username, Password);
-        static List<string> code_list = SetCodeList();
-        static Dictionary<string, string> keys;
-        #endregion
+        //public Program()
+        //{
+        //    worker = new Worker();
+        //    console = new ConsoleFunctions();
+        //}
         
         static void Main(string[] args)
         {
-            Worker farts = new Worker();
-
-            farts
-
+            worker = new Worker();
+            console = new ConsoleFunctions();
             if (args.Length == 0) 
             {
-                Run();
+                //if (worker != null) { worker.RunMain();}
+
+                worker.RunMain();
+                console.Pause();
+                
+                
             }
             else
             {
-                if (working.ValidateArgs(args)) { RunWithArguments(args); }
+                //if (worker.ValidateArgs(args)) 
+                //{
+                worker.RunWithArgs(args);
+                //}
             }
         }
 
-        static void Run()
-        {
-            keys = SetNewSiteKeys();
-            SetFields();
-            Pause();
-        }
-
-        static void RunWithArguments(string[] arguments)
-        {
-            int x = 0;
-            while (x < arguments.Count())
-            {
-                string cleanarg = arguments[x].Substring(1, (arguments[x].Length - 1));
-                switch (cleanarg.ToUpper())
-                {
-                    case "TEST":
-                        break;
-                    case "HELP":
-                        break;
-                    default:
-                        console.WriteLine("Unknown parameter");
-                        break;
-                }
-                x++;
-            }
-            console.Pause();
-        }
-
-        #region old code 2
-        static string GetSetting(string key)
-        {
-            string ret = "None";
-            try
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-                string result = appSettings[key] ?? "Setting Not found";
-                ret = result;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                Console.WriteLine("Error reading app settings");
-            }
-            return ret;
-        }
-        
 
 
-        static void Help()
-        {
-            Console.WriteLine("Paramaters:");
-            Console.WriteLine();
-            Console.WriteLine("/Help - Returns this");
-            Console.WriteLine("/Test - Runs Test Module");
-        }
-        #endregion
 
+       /* #region Program function to me moved
         static void SetFields()
         {
 
@@ -138,9 +83,7 @@ namespace SLXUpdateIDs
                 Console.WriteLine(String.Format("Replacement Sitekey for Sitekey: {0} ", item));
                 sitekeys.Add(item, Console.ReadLine());
             }
-
             return sitekeys;
-
         }
 
         static int UpdateIds(string tablename, string fieldname, string oldsitecode, string newsitecode)
@@ -169,7 +112,7 @@ namespace SLXUpdateIDs
                 int reader = int.Parse(objCmd.ExecuteScalar().ToString());
                 return reader;
             }
-            catch (System.Exception)
+            catch (FXSystem.Exception)
             {
                 return 0;
             }
@@ -187,7 +130,7 @@ namespace SLXUpdateIDs
                 string reader = objCmd.ExecuteScalar().ToString();
                 return reader;
             }
-            catch (System.Exception e)
+            catch (FXSystem.Exception e)
             {
                 return e.Message;
             }
@@ -211,7 +154,7 @@ namespace SLXUpdateIDs
                     ret.Add(reader[0].ToString());
                 }
             }
-            catch (System.Exception e)
+            catch (FXSystem.Exception e)
             {
                 ret.Add(e.Message);
             }
@@ -230,7 +173,7 @@ namespace SLXUpdateIDs
             {
                 x = objCmd.ExecuteNonQuery();
             }
-            catch (System.Exception)
+            catch (FXSystem.Exception)
             {
                 return 0;
             }
@@ -319,6 +262,8 @@ namespace SLXUpdateIDs
             Console.WriteLine("Press ENTER to continue....");
             Console.ReadLine();
         }
+        #endregion*/
+
     }
-   
+
 }

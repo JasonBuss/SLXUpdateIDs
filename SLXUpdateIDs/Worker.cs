@@ -17,7 +17,7 @@ namespace SLXUpdateIDs
         private ProgramFunctions prg;
         private ConsoleFunctions console;
         static List<string> code_list;
-        static Dictionary<string, string> keys;
+        public Dictionary<string, string> keys;
 
         //Instance Constructor
         public Worker()
@@ -170,6 +170,52 @@ namespace SLXUpdateIDs
                 ret.Add(e.Message);
             }
             return ret;
+        }
+
+        public void SetFields()
+        {
+            
+            string codesql = "select TABLENAME, FIELDNAME from sysdba.SECTABLEDEFS where fieldname like '%ID'";
+            OleDbConnection objConn = new OleDbConnection(strConnection);
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(codesql, objConn);
+            OleDbDataReader reader = objCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string tablename = reader[0].ToString();
+                string fieldname = reader[1].ToString();
+
+                int x = 0;
+                if (GetSqlInt(string.Format("select isnull(max(len({0})), 0) as idlen from sysdba.{1} where {0} is not null", fieldname, tablename)) == 12)
+                {
+                    int z = 0;
+                    foreach (var item in keys)
+                    {
+                        z = z + UpdateIds(tablename, fieldname, item.Key, item.Value);
+                        x++;
+                    }
+                    Console.WriteLine(string.Format("Updating {1}.{2}: Records Updated: {0}", z.ToString(), tablename, fieldname));
+                }
+            }
+        }
+
+        public int GetSqlInt(string sql)
+        {
+
+            OleDbConnection objConn = new OleDbConnection(strConnection);
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
+
+            try
+            {
+                int reader = int.Parse(objCmd.ExecuteScalar().ToString());
+                return reader;
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
         }
 
         

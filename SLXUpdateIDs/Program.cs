@@ -13,12 +13,6 @@ namespace SLXUpdateIDs
 
         static Worker worker;
         static ConsoleFunctions console;
-
-        //public Program()
-        //{
-        //    worker = new Worker();
-        //    console = new ConsoleFunctions();
-        //}
         
         static void Main(string[] args)
         {
@@ -26,7 +20,6 @@ namespace SLXUpdateIDs
             console = new ConsoleFunctions();
             if (args.Length == 0) 
             {
-                //if (worker != null) { worker.RunMain();}
 
                 worker.RunMain();
                 console.Pause();

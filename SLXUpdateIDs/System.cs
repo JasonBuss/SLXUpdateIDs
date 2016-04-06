@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SLXUpdateIDs
 {
     class System
     {
 
-        // Public Properties
-        private bool isInitialized { get; set; }
         // Private Properties
         private ConsoleFunctions console;
 
         // Instance Constructor
         public System()
         {
-            isInitialized = true;
             console = new ConsoleFunctions();
         }
 
@@ -39,8 +37,6 @@ namespace SLXUpdateIDs
             }
             return ret;
         }
-
-
     }
 
     #region Helper Classes
@@ -62,16 +58,14 @@ namespace SLXUpdateIDs
             return Console.ReadLine();
         }
     }
-    /*
+    
     class HelpAbout
     {
-        bool isInitialized;
         static System system;
         ConsoleFunctions console;
 
         public HelpAbout()
         {
-            isInitialized = true;
             system = new System();
             console = new ConsoleFunctions();
         }
@@ -90,10 +84,58 @@ namespace SLXUpdateIDs
         {
             //string array to contain 'about' information 
             "",
-            string.Format("Program Name:    Home Application"),
-            string.Format("Program Author:  {0}", system.GetSetting("Author")),
             ""
         };
+
+        public string[] header = new string[]
+        {
+            "",
+            string.Format("********************************************************"),
+            string.Format("*SLXUpdateID utility - (c) 2016 Customer FX Corporation*"),
+            string.Format("********************************************************"),
+            "",
+            string.Format("This utility is used to update Saleslogix ID values"),
+            string.Format("with new IDs based on user-defined site code values"),
+
+            ""
+        };
+
+        public string[] instr = new string[]
+        {
+            "",
+            string.Format("***Update Sitecode values***"),
+            "",
+            string.Format("Enter a new site code for each code presented.  Note - Sitecodes"),
+            string.Format("must be 4 characters.  Short values will be padded with '1234' and long"),
+            string.Format("values stripped after 4 characters"),
+            ""
+        };
+
+        public string ShowInstr()
+        {
+            return ReturnString(instr);
+        }
+
+        public void ShowInstr(bool printconsole)
+        {
+            if (printconsole)
+            {
+                PrintToConsole(instr);
+            }
+        }
+
+        public string ShowHeader()
+        {
+            return ReturnString(header);
+        }
+
+        public void ShowHeader(bool printconsole)
+        {
+            if (printconsole)
+            {
+                PrintToConsole(header);
+            }
+        }
 
         public string ShowHelp()
         {
@@ -141,6 +183,6 @@ namespace SLXUpdateIDs
         }
     }
 
-    */
+    
     #endregion
 }

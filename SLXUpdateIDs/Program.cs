@@ -31,6 +31,7 @@ namespace SLXUpdateIDs
                 //if (worker.ValidateArgs(args)) 
                 //{
                 worker.RunWithArgs(args);
+                console.Pause();
                 //}
             }
         }

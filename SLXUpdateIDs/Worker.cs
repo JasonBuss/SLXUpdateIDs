@@ -37,6 +37,8 @@ namespace SLXUpdateIDs
             {
                 Console.WriteLine(string.Format("Key={0}, Value={1}", item.Key, item.Value));
             }
+
+            data.SetFields(keys);
         }
 
         public void RunWithArgs(string[] arguments)
@@ -92,30 +94,17 @@ namespace SLXUpdateIDs
             {
                 Console.WriteLine(String.Format("Replacement Sitekey for Sitekey: {0} ", item));
                 string value = Console.ReadLine();
-                if (checkcode(value))
-                {
-                    sitekeys.Add(item, Console.ReadLine());
-                }
+                value = value + "1234567890";
+                value = value.Substring(0, 4);
+
+                sitekeys.Add(item, value);
+
             }
 
             return sitekeys;
 
         }
 
-        public bool checkcode(string code)
-        {
-            bool ret = false;
-            if (code.Length != 4)
-            {
-                Console.WriteLine("New Code values must be 4 characters.");
-                checkcode(code);
-            }
-            else
-            {
-                ret = true;
-            }
-            return ret;
-        }
     }
 
     class Data
@@ -172,7 +161,7 @@ namespace SLXUpdateIDs
             return ret;
         }
 
-        public void SetFields()
+        public void SetFields(Dictionary<string, string> keys)
         {
             
             string codesql = "select TABLENAME, FIELDNAME from sysdba.SECTABLEDEFS where fieldname like '%ID'";
@@ -200,6 +189,14 @@ namespace SLXUpdateIDs
             }
         }
 
+        public int UpdateIds(string tablename, string fieldname, string oldsitecode, string newsitecode)
+        {
+
+            string strsql = string.Format("update sysdba.{0} set {1} = replace({1}, '{2}', '{3}') where {1} like '%{2}%'", tablename, fieldname, oldsitecode.Trim(), newsitecode.Trim());
+            int x = ExecuteSql(strsql);
+            return x;
+        }
+
         public int GetSqlInt(string sql)
         {
 
@@ -214,8 +211,29 @@ namespace SLXUpdateIDs
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return 0;
             }
+        }
+
+        public int ExecuteSql(string sql)
+        {
+            //Execute SQL statement - Returns number of records effected
+            OleDbConnection objConn = new OleDbConnection(strConnection);
+            objConn.Open();
+            OleDbCommand objCmd = new OleDbCommand(sql, objConn);
+            Console.WriteLine(sql);
+            int x = 0;
+            try
+            {
+                x = objCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return 0;
+            }
+            return x;
         }
 
         

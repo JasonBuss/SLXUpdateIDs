@@ -19,24 +19,6 @@ namespace SLXUpdateIDs
         {
             console = new ConsoleFunctions();
         }
-
-        
-        public string GetSettings(string key)
-        {
-            string ret = "";
-            try
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-
-                string result = appSettings[key] ?? "Setting Not found";
-                ret = result;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                Console.WriteLine("Error reading app settings");
-            }
-            return ret;
-        }
     }
 
     #region Helper Classes

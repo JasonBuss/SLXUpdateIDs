@@ -21,6 +21,7 @@ namespace SLXUpdateIDs
             {
 
                 worker.RunMain();
+                //worker.test();
                 Console.WriteLine("");
                 Console.WriteLine("Update complete!");
                 console.Pause();

@@ -114,38 +114,22 @@ namespace SLXUpdateIDs
     class Data
     {
         private System system;
-        private string strConnection;
-
         public Data()
         {
             system = new System();
-            strConnection = GetConnectionStr();
-        }
-
-        public string GetConnectionStr()
-        {
-            string username = system.GetSettings("Username");
-            string password = system.GetSettings("Password");
-            string server = system.GetSettings("Server");
-            string database = system.GetSettings("Database");
-
-            string connectionstr = string.Format("Provider=SQLOLEDB.1;Password={0};Persist Security Info=True;User ID={1};Initial Catalog={2};Data Source={3}", password, username, database, server);
-            return connectionstr;
         }
 
         public OleDbConnection GetConnection(string ConnectString)
         {
-            OleDbConnection objConn = new OleDbConnection(ConnectString);
+            OleDbConnection objConn = UseUDL();
             return objConn;
         }
 
         public List<string> GetSqlValues(string sql)
         {
-            //returns a generic list containing single column returned from sql 
             List<string> ret = new List<string>();
 
-            string strprovider = strConnection;
-            OleDbConnection objConn = new OleDbConnection(strprovider);
+            OleDbConnection objConn = UseUDL();
             try
             { 
                 objConn.Open();
@@ -186,7 +170,7 @@ namespace SLXUpdateIDs
 )";
 
             
-            OleDbConnection objConn = new OleDbConnection(strConnection);
+            OleDbConnection objConn = UseUDL();
             objConn.Open();
             OleDbCommand objCmd = new OleDbCommand(codesql, objConn);
             OleDbDataReader reader = objCmd.ExecuteReader();
@@ -214,7 +198,7 @@ namespace SLXUpdateIDs
                     //Console.WriteLine(string.Format("Updating {1}.{2}: Records Updated: {0}", z.ToString(), tablename, fieldname));
                     cnt = z;
                 }
-                Console.WriteLine(string.Format("Updating {0}.{1}: Records Update: {2}", tablename, fieldname, cnt));
+                Console.WriteLine(string.Format("Updating {0}.{1}: Records Updated: {2}", tablename, fieldname, cnt));
             }
         }
 
@@ -236,8 +220,7 @@ namespace SLXUpdateIDs
 
         public int GetSqlInt(string sql)
         {
-
-            OleDbConnection objConn = new OleDbConnection(strConnection);
+            OleDbConnection objConn = UseUDL();
             objConn.Open();
             OleDbCommand objCmd = new OleDbCommand(sql, objConn);
 
@@ -265,10 +248,9 @@ namespace SLXUpdateIDs
         public int ExecuteSql(string sql)
         {
             //Execute SQL statement - Returns number of records effected
-            OleDbConnection objConn = new OleDbConnection(strConnection);
+            OleDbConnection objConn = UseUDL();
             objConn.Open();
             OleDbCommand objCmd = new OleDbCommand(sql, objConn);
-            //Console.WriteLine(sql);
             int x = 0;
             try
             {
@@ -280,6 +262,16 @@ namespace SLXUpdateIDs
                 return 0;
             }
             return x;
+        }
+
+        public OleDbConnection UseUDL()
+        {
+            string path = Directory.GetCurrentDirectory();
+            string file = "SLXUpdateIDs.udl";
+            string thedeal = string.Format("File Name = {0}\\{1}", path, file);
+            OleDbConnection conn = new OleDbConnection(thedeal);
+            return conn;
+            
         }
     }
 }
